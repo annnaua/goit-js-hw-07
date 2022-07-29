@@ -13,12 +13,13 @@ function createGalleryMarkup(galleryItems) {
 		.map((properties) => {
 			const { preview, original, description } = properties;
 
-			return `<a class="gallery__link" href="${original}">
-                <img
-                  class="gallery__image"
-                  src="${preview}"
-                  alt= ${description}
-                />`;
+			return `
+        <a class="gallery__item" href="${original}">
+            <img class="gallery__image"
+            src="${preview}"
+            alt="${description}"  />
+        </a>
+        `;
 		})
 		.join('');
 }
@@ -27,17 +28,7 @@ gallery.innerHTML = galleryMarkup;
 
 // MODAL IMAGE
 
-// const options = {
-// 	captionsData: 'alt',
-// 	captionDelay: 250,
-// };
-
-function openModalImage({ options }) {
-	return new SimpleLightbox('.gallery a', options);
-}
-
-// openModalImage(options);
-openModalImage({
+const galleryModal = new SimpleLightbox('.gallery a', {
 	captionsData: 'alt',
 	captionDelay: 250,
 });
