@@ -1,7 +1,7 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-// console.log(galleryItems);
+console.log(galleryItems);
 
 const gallery = document.querySelector('.gallery');
 const galleryMarkup = createGalleryMarkup(galleryItems);
@@ -31,32 +31,35 @@ gallery.insertAdjacentHTML('beforeend', galleryMarkup);
 
 // EVENT LISTENERS
 
+let instance;
+
+const options = {
+	onShow: () => {
+		window.addEventListener('keydown', onEscKeyPress);
+	},
+
+	onClose: () => {
+		window.removeEventListener('keydown', onEscKeyPress);
+	},
+};
+
 gallery.addEventListener('click', onImageClick);
 
 function onImageClick(e) {
 	e.preventDefault();
 
-	if (e.target.nodeName !== 'IMG') {
-		return;
+	if (e.target.dataset.source) {
+		instance = basicLightbox.create(
+			`<img src="${e.target.dataset.source}" width="800" height="600">`,
+			options
+		);
+
+		instance.show();
 	}
-	const instance = basicLightbox.create(
-		`<img src="${e.target.dataset.source}" width="800" height="600">`,
-		{
-			onShow: () => {
-				window.addEventListener('keydown', onEscKeyPress);
-			},
+}
 
-			onClose: () => {
-				window.removeEventListener('keydown', onEscKeyPress);
-			},
-		}
-	);
-
-	instance.show();
-
-	function onEscKeyPress(e) {
-		if (e.code === 'Escape') {
-			instance.close();
-		}
+function onEscKeyPress(e) {
+	if (e.code === 'Escape') {
+		instance.close();
 	}
 }
